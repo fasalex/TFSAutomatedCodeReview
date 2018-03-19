@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="AutomatedCodeReview.AutomatedCodeReviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="6,0,0,6">
+            <CheckBox HorizontalAlignment="Left"  
+                      Content="Create a code review request." 
+                      IsChecked="True"
+                      Unchecked="OnUnchecked"
+                      Checked="OnChecked"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
