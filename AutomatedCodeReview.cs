@@ -55,9 +55,9 @@ namespace AutomatedCodeReview
 
             //Create the code review request once, as the event is fired for every objects to be checked in.
 
-            PendingChange[] pendingChanges = pendingChangesExtService.IncludedChanges;
-            PendingChange pendingChange = pendingChanges[0];
-            if (pendingChange.ItemId != processingChangeEvent.PendingChange.ItemId)
+            PendingChange[] pendingChanges = pendingChangesExtService?.IncludedChanges;
+            PendingChange pendingChange = pendingChanges?[0];
+            if (pendingChange?.ItemId != processingChangeEvent.PendingChange.ItemId)
             {
                 return;
             }
