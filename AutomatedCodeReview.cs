@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,9 +55,9 @@ namespace AutomatedCodeReview
 
             //Create the code review request once, as the event is fired for every objects to be checked in.
 
-            PendingChange[] pendingChanges = pendingChangesExtService.IncludedChanges;
-            PendingChange pendingChange = pendingChanges[0];
-            if (pendingChange.ItemId != processingChangeEvent.PendingChange.ItemId)
+            PendingChange[] pendingChanges = pendingChangesExtService?.IncludedChanges;
+            PendingChange pendingChange = pendingChanges?[0];
+            if (pendingChange?.ItemId != processingChangeEvent.PendingChange.ItemId)
             {
                 return;
             }
@@ -106,9 +106,13 @@ namespace AutomatedCodeReview
                     WorkItem oldCodeReviewResponse = workitemStore.GetWorkItem(recentReviewer);
                     WorkItemType codeReviewResponseType = project.WorkItemTypes["Code Review Response"];
                     WorkItem codeReviewResponseItem = new WorkItem(codeReviewResponseType) {Title = @"Code Review Response"};
-                    codeReviewResponseItem.Fields["System.AssignedTo"].Value = oldCodeReviewResponse.Fields["System.AssignedTo"].Value;
-                    codeReviewResponseItem.Fields["System.State"].Value = "Requested";
-                    codeReviewResponseItem.Fields["System.Reason"].Value = "New";
+
+                    object reviewerName = oldCodeReviewResponse.Fields["System.State"].Value.ToString() == @"Requested"
+                        ? oldCodeReviewResponse.Fields["System.AssignedTo"].Value
+                        : oldCodeReviewResponse.Fields["Closed By"].Value;
+
+                    codeReviewResponseItem.Fields["System.AssignedTo"].Value = reviewerName;
+                    codeReviewResponseItem.Fields["Reviewed By"].Value = reviewerName;
                     ArrayList result = codeReviewResponseItem.Validate();
                     if (result.Count != 0)
                     {
